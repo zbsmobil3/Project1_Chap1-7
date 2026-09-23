@@ -73,7 +73,7 @@ def round ():
     global scores
     scores.append(numGuesses)
 
-    print(f"You have played {roundsPlayed} rounds and have gotten the following scores:\n676767")
+    print(f"You have played {roundsPlayed} rounds and have gotten the following scores:\n",*(str(i) for i in scores), sep="")
 
     newRound=input("Do you want to play again? (y/n)")
     if newRound=="y":
