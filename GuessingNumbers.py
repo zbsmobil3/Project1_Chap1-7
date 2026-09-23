@@ -1,17 +1,20 @@
 """This program does stuff. I'll fill this in later. I already wrote the other assignment about what I'm going to do"""
 from random import randint
 
-def validation(): #Created to not go more than 3 deep
+def validation(isFirstTime): #Created to not go more than 3 deep
     """Makes sure a valid positive interger is entered, and repeats if not."""
     
     validGuess = False
     while validGuess != True: #Make them keep trying until they get it right
-                guess=input("Enter your next guess")
+                if isFirstTime:
+                     guess=input("Enter your first guess ").strip()         
+                else:
+                     guess=input("Enter your next guess ").strip()                 
                 if guess.isdigit(): #Weeding out nonnumerical inputs and negative numbers so no errors occur. Also return false with a decimal point
-                    print("Your guess must be an integer")
+                    validGuess=True
                 else:
                     print("Your guess must be a number")
-    return guess
+    return int(guess)
 
 
 def round ():
@@ -25,13 +28,17 @@ def round ():
     botLow=low
     botHigh=high
 
-    botGuess=randint(botLow,botHigh)
+  
 
     guess=high+1 #This is so it is always outside of the range
     output=""
 
     while guess != a: #This isn't really needed since I'm using a break instead.
-        guess = validation()
+        botGuess=randint(botLow,botHigh)
+        if (botLow == low) & (botHigh == high): #Seeing if it is the first time in the round
+            guess = validation(True)
+        else:
+            guess = validation(False)
         if guess > a:
             output="high"
         elif guess < a:
@@ -39,5 +46,27 @@ def round ():
         else:
             output="right on!"
             break
-        
+        if botGuess > a:
+             botHigh=botGuess-1
+             botOutput="high"
+        elif botGuess < a:
+            botLow=botGuess+1
+            botOutput="low"
+        else:
+            break
+        print(f"You guessed {output}")
+        print(f"the bot guessed {botOutput}") #Maybe add later functionality for hiding/showing the bot's guess?
+    if guess == a:
+         print("Congrats! You won the round! :D")
+    else:
+         print("The bot won :S")
+
+    #Highscore logic will probably go here
+    
+    newRound=input("Do you want to play again? (y/n)")
+    if newRound=="y":
+         round()
+
+#Main Body of Code
+round()    
         
