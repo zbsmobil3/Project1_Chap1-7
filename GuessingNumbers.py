@@ -1,6 +1,11 @@
 """This program does stuff. I'll fill this in later. I already wrote the other assignment about what I'm going to do"""
 from random import randint
 
+#Declaring Initial Vars/Lists
+scores=[]
+roundsPlayed=0
+
+
 def validation(isFirstTime): #Created to not go more than 3 deep
     """Makes sure a valid positive interger is entered, and repeats if not."""
     
@@ -20,7 +25,7 @@ def validation(isFirstTime): #Created to not go more than 3 deep
 def round ():
     """The Core Loop, run each Round"""
 
-
+    numGuesses=0
     low=0 #Just making low and high in case I want to change it later
     high=100
     a=randint(low,high) #Our random num for the round
@@ -39,6 +44,7 @@ def round ():
             guess = validation(True)
         else:
             guess = validation(False)
+        numGuesses +=1
         if guess > a:
             output="high"
         elif guess < a:
@@ -62,11 +68,17 @@ def round ():
          print("The bot won :S")
 
     #Highscore logic will probably go here
-    
+    global roundsPlayed
+    roundsPlayed += 1
+    global scores
+    scores.append(numGuesses)
+
+    print(f"You have played {roundsPlayed} rounds and have gotten the following scores:\n676767")
+
     newRound=input("Do you want to play again? (y/n)")
     if newRound=="y":
          round()
 
 #Main Body of Code
-round()    
+round()   
         
