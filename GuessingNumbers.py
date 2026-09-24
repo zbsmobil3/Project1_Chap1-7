@@ -71,11 +71,30 @@ def round ():
     global roundsPlayed
     roundsPlayed += 1
     global scores
-    scores.append(numGuesses)
+    if guess==a:
+        scores.append(numGuesses)
+    else:
+         scores.append("LOST! (10)")
 
-    print(f"You have played {roundsPlayed} rounds and have gotten the following scores:\n",*(str(i) for i in scores), sep="")
+    #Get average score
+    average=0
+    avgscore=[]
+    for i in range (len(scores)+1):
+        if scores[i-1] == 'LOST! (10)':
+            avgscore.append(10)
+        else:
+             avgscore.append(scores[i-1])
+             
 
-    newRound=input("Do you want to play again? (y/n)")
+    for i in avgscore: average+= i
+    average /= len(avgscore)
+
+    #Output
+    print(f"You have played {roundsPlayed} rounds and have gotten the following scores:")
+    print(*(str(i) for i in scores), sep=", ")
+    print(f"Your Average Score Is {average:.2f} and Your Highscore Is {min(avgscore)}")
+
+    newRound=input("Do you want to play again? (y/n) ")
     if newRound=="y":
          round()
 
