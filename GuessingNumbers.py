@@ -1,10 +1,25 @@
-"""This program does stuff. I'll fill this in later. I already wrote the other assignment about what I'm going to do"""
+"""A guessing game between you and a bot to be the first to guess the random number between 1 and 100.
+ You are told if the number is higher or lower than your guess each round. There are unlimited rounds
+ with feedback inbetween each one showing stats to make it feel more like a built out text based game."""
+
 from random import randint
 
 #Declaring Initial Vars/Lists
 scores=[]
 roundsPlayed=0
+showBotGuess=False
 
+#Just some welcome and setting(s)
+print()
+print("Welcome to the Number Guessing Game!")
+print("Each Round you try to guess a number between 1 and 100")
+print("And get told whether you guessed above or below the number")
+print("You are guessing against a bot")
+input("Press enter to continue ")
+print()
+z=input("Would you like to see the bot's guesses? (y/n) ")
+if z=="y":
+    showBotGuess=True
 
 def validation(isFirstTime): #Created to not go more than 3 deep
     """Makes sure a valid positive interger is entered, and repeats if not."""
@@ -61,7 +76,9 @@ def round ():
         else:
             break
         print(f"You guessed {output}")
-        print(f"the bot guessed {botOutput}") #Maybe add later functionality for hiding/showing the bot's guess?
+        if showBotGuess:
+            print(f"The Bot's Guess: {botGuess}")
+        print(f"The Bot guessed {botOutput}")
     if guess == a:
          print("Congrats! You won the round! :D")
     else:
