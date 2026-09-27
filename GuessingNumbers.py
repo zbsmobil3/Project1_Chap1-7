@@ -1,6 +1,6 @@
 """A guessing game between you and a bot to be the first to guess the random number between 1 and 100.
  You are told if the number is higher or lower than your guess each round. There are unlimited rounds
- with feedback inbetween each one showing stats to make it feel more like a built out text based game."""
+ with feedback in between each one showing stats to make it feel more like a built out text based game."""
 
 from random import randint
 
@@ -96,7 +96,7 @@ def round ():
     #Get average score
     average=0
     avgscore=[]
-    for i in range (len(scores)+1):
+    for i in range (len(scores)):
         if scores[i-1] == 'LOST! (10)':
             avgscore.append(10)
         else:
