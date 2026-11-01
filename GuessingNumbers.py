@@ -4,12 +4,6 @@
 
 from random import randint
 
-#Declaring Initial Vars/Lists
-scores=[]
-roundsPlayed=0
-showBotGuess=False
-
-
 #-------------------------------------------------------------------------------------------------------------
 import sys
 from time import sleep
@@ -32,7 +26,20 @@ class HighLow:
 
 
         #SETTINGS:
-        self.showBotGuess=False
+        self.showBotGuess=False        
+        self.low=0 #Just making low and high in case I want to change it later
+        self.high=100
+          
+        
+        #SETTING UP VARS:
+        self.scores=[]
+        self.roundsPlayed=0
+        self.a=randint(self.low,self.high) #Our random num for the round
+        self.numGuesses=0
+        self.botLow=self.low
+        self.botHigh=self.high
+        self.guess=self.high+1 #This is so it is always outside of the range
+        self.output=""
 
         #start Alien Invasion in an inactive state.
         self.game_active = False
@@ -69,7 +76,13 @@ class HighLow:
 
         while True:
             self._check_events()
-            #if self.game_active:
+            if self.game_active:
+                if (self.botLow == self.low) & (self.botHigh == self.high): #Seeing if it is the first time in the round
+                    self.guess = validation(True)
+                else:
+                    self.guess = validation(False)
+                self.guess_analysis=self.guess_processing()
+                self.guess_display()
                 #self.ship.update()
                 #self._update_bullets()
                 #self._update_aliens()
@@ -139,6 +152,32 @@ class HighLow:
         #elif event.key == pygame.K_LEFT:
             #self.ship.moving_left = False
 
+    def guess_processing(self):
+        self.numGuesses +=1
+        if self.guess > self.a:
+            output="high"
+        elif self.guess < self.a:
+            output="low"
+        else:
+            output="right on!"
+            return(output)
+        if self.botGuess > self.a:
+             self.botHigh=self.botGuess-1
+             self.botOutput="high"
+        elif self.botGuess < self.a:
+            self.botLow=self.botGuess+1
+            self.botOutput="low"
+        else:
+            return()
+        return(output)
+        
+    def guess_display(self):
+        print(f"You guessed {self.guess_analysis}")
+        if self.showBotGuess:
+            print(f"The Bot's Guess: {self.botGuess}")
+        print(f"The Bot guessed {self.botOutput}")
+
+
 
     #def _create_fleet(self):
         #"""Create the fleet of aliens."""
@@ -163,103 +202,9 @@ class HighLow:
         #new_alien.x = x_position
         #new_alien.rect.x = x_position
         #new_alien.rect.y = y_position
-        #self.aliens.add(new_alien)
+        #self.aliens.add(new_alien)         
 
-    #def _fire_bullet(self):
-        #"""Create a new bullet and add it to the bullets group."""
-        #if len(self.bullets) < self.settings.bullets_allowed:
-            #new_bullet = Bullet(self)
-            #self.bullets.add(new_bullet)
 
-    #def _update_bullets(self):
-        #"""Update position of bullets and get rid of old bullets."""
-        #update bullet positions.
-        #self.bullets.update()
-
-        #get rid of bullets that have disappeared.
-        #for bullet in self.bullets.copy():
-            #if bullet.rect.bottom <= 0:
-                 #self.bullets.remove(bullet)
-
-        #self._check_bullet_alien_collisions()
-
-    #def _check_bullet_alien_collisions(self): #one of the most important functions by far
-        #"""Respond to bullet-alien collisions."""
-        #remove any bullets and aliens that have collided.
-        #collisions = pygame.sprite.groupcollide(
-                #self.bullets, self.aliens, True, True)
-
-        #if collisions:
-            #for aliens in collisions.values():
-                #self.stats.score += self.settings.alien_points * len(aliens)
-            #self.stats.score += self.settings.alien_points
-            #self.tut.prep_score()
-            #self.tut.check_high_score()
-
-        #if not self.aliens:
-            #destroy existing bullets and create new fleet.
-            #self.bullets.empty()
-            #self._create_fleet()
-            #self.settings.increase_speed()
-            #increase level.
-            #self.stats.level += 1
-            #self.tut.prep_level()
-
-    #def _update_aliens(self):
-        #"""Check if the fleet is at an edge, then update positions."""
-        #self._check_fleet_edges()
-        #self.aliens.update()
-
-        #look for alien-ship collisions.
-        #if pygame.sprite.spritecollideany(self.ship, self.aliens):
-            #self._ship_hit()
-
-        #look for aliens hitting the bottom of the screen.
-        #self._check_aliens_bottom()           
-
-    #def _check_fleet_edges(self):
-        #"""Respond appropriately if any aliens have reached an edge."""
-        #for alien in self.aliens.sprites():
-            #if alien.check_edges():
-                #self._change_fleet_direction()
-                #break
-
-    #def _check_aliens_bottom(self):
-        #"""Check if any aliens have reached the bottom of the screen."""
-        #for alien in self.aliens.sprites():
-            #if alien.rect.bottom >= self.settings.screen_height:
-                # Treat this the same as if the ship got hit.
-                #self._ship_hit()
-                #break
-
-    #def _change_fleet_direction(self):
-        #"""Drop the entire fleet and change the fleet's direction."""
-        #for alien in self.aliens.sprites():
-            #alien.rect.y += self.settings.fleet_drop_speed
-        #self.settings.fleet_direction *= -1
-
-    #def _ship_hit(self):
-        #"""Respond to the ship being hit by an alien."""
-        #if self.stats.ships_left > 0:
-
-            #decrement ships_left and update scoreboard.
-            #self.stats.ships_left -= 1
-            #self.tut.prep_ships()
-
-            #get rid of any remaining bullets and aliens.
-            #self.bullets.empty()
-            #self.aliens.empty()
-
-            #create a new fleet and center the ship.
-            #self._create_fleet()
-            #self.ship.center_ship()
-
-            #sleep(0.5) #pause.
-        #else:
-            #I'll probably put this in its own func for the final project
-            #For readability as a end of wave sort of thing. Abstraction.
-            #self.game_active = False
-            #pygame.mouse.set_visible(True)
 
     def _update_screen(self):
         """Update images on the screen, and flip to the new screen."""
@@ -285,7 +230,7 @@ if __name__ == '__main__':
     hl.run_game()
 #-------------------------------------------------------------------------------------------------------------
 
-#13 Lines Through TOT
+#43 Lines Through ToT
 
 #Just some welcome and setting(s)
 #print()
@@ -318,18 +263,18 @@ def validation(isFirstTime): #Created to not go more than 3 deep
 def round ():
     """The Core Loop, run each Round"""
 
-    numGuesses=0
-    low=0 #Just making low and high in case I want to change it later
-    high=100
-    a=randint(low,high) #Our random num for the round
+    #numGuesses=0
+    #low=0 #Just making low and high in case I want to change it later
+    #high=100
+    #a=randint(low,high) #Our random num for the round
 
-    botLow=low
-    botHigh=high
+    #botLow=low
+    #botHigh=high
 
   
 
-    guess=high+1 #This is so it is always outside of the range
-    output=""
+    #guess=high+1 #This is so it is always outside of the range
+    #output=""
 
     while guess != a: #This isn't really needed since I'm using a break instead.
         botGuess=randint(botLow,botHigh)
@@ -337,26 +282,26 @@ def round ():
             guess = validation(True)
         else:
             guess = validation(False)
-        numGuesses +=1
-        if guess > a:
-            output="high"
-        elif guess < a:
-            output="low"
-        else:
-            output="right on!"
-            break
-        if botGuess > a:
-             botHigh=botGuess-1
-             botOutput="high"
-        elif botGuess < a:
-            botLow=botGuess+1
-            botOutput="low"
-        else:
-            break
-        print(f"You guessed {output}")
-        if showBotGuess:
-            print(f"The Bot's Guess: {botGuess}")
-        print(f"The Bot guessed {botOutput}")
+        #numGuesses +=1
+        #if guess > a:
+        #    output="high"
+        #elif guess < a:
+        #    output="low"
+        #else:
+        #    output="right on!"
+        #    break
+        #if botGuess > a:
+        #     botHigh=botGuess-1
+        #     botOutput="high"
+        #elif botGuess < a:
+        #    botLow=botGuess+1
+        #    botOutput="low"
+        #else:
+        #    break
+        #print(f"You guessed {output}")
+        #if showBotGuess:
+        #    print(f"The Bot's Guess: {botGuess}")
+        #print(f"The Bot guessed {botOutput}")
     if guess == a:
          print("Congrats! You won the round! :D")
     else:
