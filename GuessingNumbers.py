@@ -31,6 +31,9 @@ class HighLow:
         pygame.init()
 
 
+        #SETTINGS:
+        self.showBotGuess=False
+        
         self.clock= pygame.time.Clock()
         #self.settings=Settings()
 
@@ -109,6 +112,9 @@ class HighLow:
                 self.tut.prep_setting_choice()
                 self.no_button = Button(self, "No", "two")
                 self.play_button = Button(self, "Yes", "one")
+            elif self.play_button.msg == "Yes":
+                self.showBotGuess=True
+
                 
                 
             #self.tut.prep_level()
@@ -291,19 +297,20 @@ if __name__ == '__main__':
     hl.run_game()
 #-------------------------------------------------------------------------------------------------------------
 
+#13 Lines Through TOT
 
 #Just some welcome and setting(s)
-print()
-print("Welcome to the Number Guessing Game!")
-print("Each Round you try to guess a number between 1 and 100")
-print("And get told whether you guessed above or below the number")
-print("You are guessing against a bot")
-input("Press enter to continue ")
-print()
-z=input("Would you like to see the bot's guesses? (y/n) ")
-if z=="y":
-    showBotGuess=True
-
+#print()
+#print("Welcome to the Number Guessing Game!")
+#print("Each Round you try to guess a number between 1 and 100")
+#print("And get told whether you guessed above or below the number")
+#print("You are guessing against a bot")
+#input("Press enter to continue ")
+#print()
+#z=input("Would you like to see the bot's guesses? (y/n) ")
+#if z=="y":
+#    showBotGuess=True
+#
 def validation(isFirstTime): #Created to not go more than 3 deep
     """Makes sure a valid positive interger is entered, and repeats if not."""
     
