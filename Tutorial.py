@@ -11,6 +11,8 @@ class Intro:
 
     def __init__(self, hl_game):
         """Initialize scorekeeping attributes."""
+        self.tut_lines=["Welcome to the Number Guessing Game!","Each Round you try to guess a number between 1 and 100","And get told whether you guessed above or below the number","You are guessing against a bot","Press button to continue"]
+
         self.hl_game = hl_game
         self.screen = hl_game.screen
         self.screen_rect = self.screen.get_rect()
@@ -24,15 +26,18 @@ class Intro:
 
     def prep_text(self):
         """Render the text"""
-        text = f"self.stats.score, -1"
-        self.text_image = self.font.render(text, True,
+        text=""
+        for i in self.tut_lines:
+            text+=str("\n"+i)
+        self.text_image = self.font.render(f"{text}", True,
                 self.text_color)
 
         #display the score at the top right of the screen.
         self.text_rect = self.text_image.get_rect()
-        self.text_rect.center = self.screen_rect.center - 20
+        self.text_rect.center = self.screen_rect.center
         self.text_rect.top = 20
 
-    def show_score(self):
+    def show_text(self):
         """Draw scores, level, and ships to the screen."""
+        print("I guess smth happened")
         self.screen.blit(self.text_image, self.text_rect)
