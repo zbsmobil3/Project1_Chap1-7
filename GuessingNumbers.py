@@ -59,6 +59,7 @@ class HighLow:
 
         #make the Play button.
         self.play_button = Button(self, "Start")
+        self.no_button = Button(self, "")
 
     def run_game(self):
         """Houses main gameloop"""
@@ -89,7 +90,8 @@ class HighLow:
                 self._check_keydown_events(event)
             #elif event.type == pygame.KEYUP:
                 #self._check_keyup_events(event)
-
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#                           I'LL NEED A CHECK NO BUTTON AS WELL
     def _check_play_button(self, mouse_pos):
         """Start a new game when the player clicks Play."""
         button_clicked = self.play_button.rect.collidepoint(mouse_pos)
@@ -103,8 +105,11 @@ class HighLow:
                 self.tut.prep_tut()
                 #self.tut.show_text()
                 self.play_button = Button(self, "Continue")
-            else:
+            elif self.play_button.msg=="Continue":
                 self.tut.prep_setting_choice()
+                self.no_button = Button(self, "No", "two")
+                self.play_button = Button(self, "Yes", "one")
+                
                 
             #self.tut.prep_level()
             #self.tut.prep_ships()
@@ -275,7 +280,9 @@ class HighLow:
         
         #draw the play button if the game is inactive.
         if not self.game_active:
-            self.play_button.draw_button()
+            self.play_button.draw_button() 
+            if self.no_button.msg != "":
+                self.no_button.draw_button()
         
 
 if __name__ == '__main__':

@@ -3,7 +3,7 @@ import pygame.font
 class Button:
     """A class to build buttons for the game."""
 
-    def __init__(self, hl_game, msg):
+    def __init__(self, hl_game, msg, two=False):
         """Initialize button attributes."""
         self.msg=msg
         self.screen = hl_game.screen
@@ -15,9 +15,18 @@ class Button:
         self.text_color = (255, 255, 255)
         self.font = pygame.font.SysFont(None, 48)
 
+        
         # Build the button's rect object and center it.
         self.rect = pygame.Rect(0, 0, self.width, self.height)
         self.rect.center = self.screen_rect.center
+
+        #offsets for yes/no buttons
+        if two=="one":
+            self.rect.x += (self.width*2)/(-3)
+            print(two)
+        elif two=="two":
+            self.rect.x += (self.width*2)/3
+            print(two)
 
         # The button message needs to be prepped only once.
         self._prep_msg(msg)
