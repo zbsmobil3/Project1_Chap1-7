@@ -23,10 +23,8 @@ class Button:
         #offsets for yes/no buttons
         if two=="one":
             self.rect.x += (self.width*2)/(-3)
-            print(two)
         elif two=="two":
             self.rect.x += (self.width*2)/3
-            print(two)
 
         # The button message needs to be prepped only once.
         self._prep_msg(msg)

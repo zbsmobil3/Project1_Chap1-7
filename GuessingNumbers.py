@@ -33,6 +33,9 @@ class HighLow:
 
         #SETTINGS:
         self.showBotGuess=False
+
+        #start Alien Invasion in an inactive state.
+        self.game_active = False
         
         self.clock= pygame.time.Clock()
         #self.settings=Settings()
@@ -56,9 +59,6 @@ class HighLow:
         #self.aliens = pygame.sprite.Group()
 
         #self._create_fleet()
-
-        #start Alien Invasion in an inactive state.
-        self.game_active = False
 
         #make the Play button.
         self.play_button = Button(self, "Start")
@@ -89,24 +89,25 @@ class HighLow:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = pygame.mouse.get_pos()
                 self._check_play_button(mouse_pos)
+                self._check_no_button(mouse_pos)
             elif event.type == pygame.KEYDOWN:
                 self._check_keydown_events(event)
             #elif event.type == pygame.KEYUP:
                 #self._check_keyup_events(event)
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#                           I'LL NEED A CHECK NO BUTTON AS WELL
+
+    def _check_no_button(self, mouse_pos):
+        """Control the no button to the setting"""
+        no_button_clicked = self.no_button.rect.collidepoint(mouse_pos)
+        if no_button_clicked and not self.game_active and self.play_button.msg == "Yes":
+            self.game_active = True
+
     def _check_play_button(self, mouse_pos):
-        """Start a new game when the player clicks Play."""
+        """Control the button to start the game, progress through initial
+        dialouge, and say yes to the setting"""
         button_clicked = self.play_button.rect.collidepoint(mouse_pos)
         if button_clicked and not self.game_active:
-            # Reset the game settings.
-            #self.settings.initialize_dynamic_settings()
-            
-            #reset the game statistics.
-            #self.stats.reset_stats()
             if self.play_button.msg == "Start":
                 self.tut.prep_tut()
-                #self.tut.show_text()
                 self.play_button = Button(self, "Continue")
             elif self.play_button.msg=="Continue":
                 self.tut.prep_setting_choice()
@@ -114,20 +115,7 @@ class HighLow:
                 self.play_button = Button(self, "Yes", "one")
             elif self.play_button.msg == "Yes":
                 self.showBotGuess=True
-
-                
-                
-            #self.tut.prep_level()
-            #self.tut.prep_ships()
-            #self.game_active = True
-
-            #get rid of any remaining bullets and aliens.
-            #self.bullets.empty()
-            #self.aliens.empty()
-
-            #create a new fleet and center the ship.
-            #self._create_fleet()
-            #self.ship.center_ship()
+                self.game_active = True
 
             #hide the mouse cursor.
             #pygame.mouse.set_visible(False)
