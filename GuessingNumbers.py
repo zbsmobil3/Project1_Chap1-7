@@ -46,7 +46,7 @@ class HighLow:
         #self.stats = GameStats(self)
         self.tut = Intro(self)
 
-        self.bg_clr=(230,230,230)
+        self.bg_clr=(0,0,0)
 
         #self.ship=Ship(self)
         #self.bullets = pygame.sprite.Group()
@@ -58,7 +58,7 @@ class HighLow:
         self.game_active = False
 
         #make the Play button.
-        self.play_button = Button(self, "Continue")
+        self.play_button = Button(self, "Start")
 
     def run_game(self):
         """Houses main gameloop"""
@@ -99,8 +99,13 @@ class HighLow:
             
             #reset the game statistics.
             #self.stats.reset_stats()
-            self.tut.prep_text()
-            self.tut.show_text()
+            if self.play_button.msg == "Start":
+                self.tut.prep_tut()
+                #self.tut.show_text()
+                self.play_button = Button(self, "Continue")
+            else:
+                self.tut.prep_setting_choice()
+                
             #self.tut.prep_level()
             #self.tut.prep_ships()
             #self.game_active = True
@@ -115,6 +120,7 @@ class HighLow:
 
             #hide the mouse cursor.
             #pygame.mouse.set_visible(False)
+            
 
     def _check_keydown_events(self, event):
         """Respond to keypresses."""
@@ -258,15 +264,15 @@ class HighLow:
 
     def _update_screen(self):
         """Update images on the screen, and flip to the new screen."""
-        #self.screen.fill(self.settings.bg_clr)
+        self.screen.fill(self.bg_clr)
         #for bullet in self.bullets.sprites():
             #bullet.draw_bullet()
         #self.ship.blitme()
         #self.aliens.draw(self.screen)
 
         #draw the score information.
+        self.tut.show_text()
         
-        print(self.game_active)
         #draw the play button if the game is inactive.
         if not self.game_active:
             self.play_button.draw_button()

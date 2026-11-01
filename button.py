@@ -5,6 +5,7 @@ class Button:
 
     def __init__(self, hl_game, msg):
         """Initialize button attributes."""
+        self.msg=msg
         self.screen = hl_game.screen
         self.screen_rect = self.screen.get_rect()
 

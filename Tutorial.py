@@ -22,9 +22,13 @@ class Intro:
         self.font = pygame.font.SysFont(None, 48)
 
         #prepare the initial score image.
-        self.prep_text()
+        self.text_image = self.font.render("", True,
+                        self.text_color)
+        self.text_rect = self.text_image.get_rect()
 
-    def prep_text(self):
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#                 I CAN CONDENSE THIS INTO ONE FUNC WITH THE PARAM TEXT
+    def prep_tut(self):
         """Render the text"""
         text=""
         for i in self.tut_lines:
@@ -37,7 +41,18 @@ class Intro:
         self.text_rect.center = self.screen_rect.center
         self.text_rect.top = 20
 
+    def prep_setting_choice(self):
+            """Render the text"""
+            text="Would you like to see the bot's guesses? (y/n) "
+            self.text_image = self.font.render(f"{text}", True,
+                    self.text_color)
+    
+            #display the score at the top right of the screen.
+            self.text_rect = self.text_image.get_rect()
+            self.text_rect.center = self.screen_rect.center
+            self.text_rect.top = 20
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
     def show_text(self):
         """Draw scores, level, and ships to the screen."""
-        print("I guess smth happened")
         self.screen.blit(self.text_image, self.text_rect)
