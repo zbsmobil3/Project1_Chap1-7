@@ -28,6 +28,16 @@ class Intro:
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #                 I CAN CONDENSE THIS INTO ONE FUNC WITH THE PARAM TEXT
+    def prep_custom_text(self, text):
+        """Render the text"""
+        self.text_image = self.font.render(f"{text}", True,
+                self.text_color)
+    
+        #display the score at the top right of the screen.
+        self.text_rect = self.text_image.get_rect()
+        self.text_rect.center = self.screen_rect.center
+        self.text_rect.top = 20
+        
     def prep_tut(self):
         """Render the text"""
         text=""

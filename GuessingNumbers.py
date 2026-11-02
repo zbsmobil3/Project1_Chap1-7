@@ -40,6 +40,8 @@ class HighLow:
         self.botHigh=self.high
         self.guess=self.high+1 #This is so it is always outside of the range
         self.output=""
+        self.user_input=""
+        self.enter_pressed=False
 
         #start Alien Invasion in an inactive state.
         self.game_active = False
@@ -74,15 +76,22 @@ class HighLow:
     def run_game(self):
         """Houses main gameloop"""
 
-        while True:
-            self._check_events()
+        while True:    
             if self.game_active:
                 if (self.botLow == self.low) & (self.botHigh == self.high): #Seeing if it is the first time in the round
-                    self.guess = validation(True)
+                    self.guess = self.validation(True)
                 else:
-                    self.guess = validation(False)
+                    self.guess = self.validation(False)
+                
+                self.botGuess=randint(self.botLow,self.botHigh)
+                if (self.botLow == self.low) & (self.botHigh == self.high): #Seeing if it is the first time in the round
+                    self.guess = self.validation(True)
+                else:
+                    self.guess = self.validation(False)
                 self.guess_analysis=self.guess_processing()
                 self.guess_display()
+            else:
+                self._check_events()
                 #self.ship.update()
                 #self._update_bullets()
                 #self._update_aliens()
@@ -94,7 +103,7 @@ class HighLow:
             pygame.display.flip()
             self.clock.tick(60)
 
-    def _check_events(self):
+    def _check_events(self, check_str_input=False):
         """Watch for keyboard and mouse inputs"""
         for event in pygame.event.get():
             #if event.type == pygame.QUIT:
@@ -104,9 +113,13 @@ class HighLow:
                 self._check_play_button(mouse_pos)
                 self._check_no_button(mouse_pos)
             elif event.type == pygame.KEYDOWN:
-                self._check_keydown_events(event)
+                self._check_keydown_events(event,check_str_input)
             #elif event.type == pygame.KEYUP:
                 #self._check_keyup_events(event)
+            elif event.type == pygame.TEXTINPUT and check_str_input:
+                self.user_input += event.text
+            
+
 
     def _check_no_button(self, mouse_pos):
         """Control the no button to the setting"""
@@ -134,7 +147,7 @@ class HighLow:
             #pygame.mouse.set_visible(False)
             
 
-    def _check_keydown_events(self, event):
+    def _check_keydown_events(self, event, check_str_input=False):
         """Respond to keypresses."""
         #if event.key == pygame.K_RIGHT:
             #self.ship.moving_right = True
@@ -142,6 +155,18 @@ class HighLow:
             #self.ship.moving_left = True
         if event.key == pygame.K_q:
             sys.exit()
+        elif event.key == pygame.K_BACKSPACE and check_str_input:
+            try:
+                self.user_input = self.user_input[:-1]
+            except:
+                print("There were less than 1 charachters")
+        elif event.key == pygame.K_RETURN and check_str_input:
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            self.enter_pressed=True
+#                USER HAS SUMBITTED INPUT
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            pass
+
         #elif event.key == pygame.K_SPACE:
             #self._fire_bullet()
 
@@ -172,10 +197,36 @@ class HighLow:
         return(output)
         
     def guess_display(self):
-        print(f"You guessed {self.guess_analysis}")
+        self.tut.prep_custom_text(f"You guessed {self.guess_analysis}")
         if self.showBotGuess:
-            print(f"The Bot's Guess: {self.botGuess}")
-        print(f"The Bot guessed {self.botOutput}")
+            self.tut.prep_custom_text(f"The Bot's Guess: {self.botGuess}")
+        self.tut.prep_custom_text(f"The Bot guessed {self.botOutput}")
+
+    def validation(self,isFirstTime): #Created to not go more than 3 deep
+        """Makes sure a valid positive interger is entered, and repeats if not."""
+    
+        self.validGuess = False
+        while self.validGuess != True: #Make them keep trying until they get it right
+            self._check_events()
+            if isFirstTime:
+                self.tut.prep_custom_text("Enter your first guess ")
+                while not self.enter_pressed:
+                    self._check_events(True)
+                    #self.guess=input("Enter your first guess ").strip() 
+                self.enter_pressed=False 
+                print("sucsessful exit")       
+            else:
+                self.tut.prep_custom_text("Enter your next guess ")
+                while not self.enter_pressed:
+                    self._check_events(True)
+                self.enter_pressed=False 
+                print("sucsessful exit")   
+                #self.guess=input("Enter your next guess ").strip()                 
+            if self.guess.isdigit(): #Weeding out nonnumerical inputs and negative numbers so no errors occur. Also return false with a decimal point
+                self.validGuess=True
+            else:
+                self.tut.prep_custom_text("Your guess must be a number")
+        return int(self.guess)
 
 
 
