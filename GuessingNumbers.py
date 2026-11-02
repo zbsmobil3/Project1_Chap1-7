@@ -210,18 +210,31 @@ class HighLow:
             self._check_events()
             if isFirstTime:
                 self.tut.prep_custom_text("Enter your first guess ")
-                while not self.enter_pressed:
-                    self._check_events(True)
-                    #self.guess=input("Enter your first guess ").strip() 
-                self.enter_pressed=False 
-                print("sucsessful exit")       
             else:
                 self.tut.prep_custom_text("Enter your next guess ")
-                while not self.enter_pressed:
-                    self._check_events(True)
-                self.enter_pressed=False 
-                print("sucsessful exit")   
-                #self.guess=input("Enter your next guess ").strip()                 
+            sleep(0.5)
+            #redraw the screen
+            self._update_screen()
+                                                                    
+            #make the most recently drawn screen visible
+            pygame.display.flip()
+            self.clock.tick(60)
+                
+            while not self.enter_pressed:
+                self._check_events(True)
+                if not self.user_input == "":
+                    self.tut.prep_custom_text(self.user_input)
+                #redraw the screen
+                self._update_screen()
+                                                    
+                #make the most recently drawn screen visible
+                pygame.display.flip()
+                self.clock.tick(60)
+                #self.guess=input("Enter your first guess ").strip() 
+            self.enter_pressed=False 
+            print("sucsessful exit")       
+            
+            #self.guess=input("Enter your next guess ").strip()                 
             if self.guess.isdigit(): #Weeding out nonnumerical inputs and negative numbers so no errors occur. Also return false with a decimal point
                 self.validGuess=True
             else:
