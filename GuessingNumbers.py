@@ -42,6 +42,7 @@ class HighLow:
         self.output=""
         self.user_input=""
         self.enter_pressed=False
+        self.validGuess = False
 
         #start Alien Invasion in an inactive state.
         self.game_active = False
@@ -84,12 +85,9 @@ class HighLow:
                     self.guess = self.validation(False)
                 
                 self.botGuess=randint(self.botLow,self.botHigh)
-                if (self.botLow == self.low) & (self.botHigh == self.high): #Seeing if it is the first time in the round
-                    self.guess = self.validation(True)
-                else:
-                    self.guess = self.validation(False)
                 self.guess_analysis=self.guess_processing()
                 self.guess_display()
+                
             else:
                 self._check_events()
                 #self.ship.update()
@@ -206,20 +204,23 @@ class HighLow:
         """Makes sure a valid positive interger is entered, and repeats if not."""
     
         self.validGuess = False
-        while self.validGuess != True: #Make them keep trying until they get it right
-            self._check_events()
-            if isFirstTime:
-                self.tut.prep_custom_text("Enter your first guess ")
-            else:
-                self.tut.prep_custom_text("Enter your next guess ")
-            sleep(0.5)
-            #redraw the screen
-            self._update_screen()
+       
+        self._check_events()
+        if isFirstTime:
+            self.tut.prep_custom_text("Enter your first guess ")
+        else:
+            self.tut.prep_custom_text("Enter your next guess ")
+        #redraw the screen
+        self._update_screen()
                                                                     
-            #make the most recently drawn screen visible
-            pygame.display.flip()
-            self.clock.tick(60)
-                
+        #make the most recently drawn screen visible
+        pygame.display.flip()
+        self.clock.tick(60)
+
+        sleep(0.5)
+
+        while not self.validGuess: #Make them keep trying until they get it right
+            print(self.validGuess)    
             while not self.enter_pressed:
                 self._check_events(True)
                 if not self.user_input == "":
@@ -232,13 +233,25 @@ class HighLow:
                 self.clock.tick(60)
                 #self.guess=input("Enter your first guess ").strip() 
             self.enter_pressed=False 
-            print("sucsessful exit")       
+
+            self.guess=(self.user_input).strip()
+            self.user_input=""
             
-            #self.guess=input("Enter your next guess ").strip()                 
+            #self.guess=input("Enter your next guess ").strip()   
+            print(f"[{self.guess}]")              
             if self.guess.isdigit(): #Weeding out nonnumerical inputs and negative numbers so no errors occur. Also return false with a decimal point
+                print("something worked")
                 self.validGuess=True
             else:
                 self.tut.prep_custom_text("Your guess must be a number")
+                
+                #redraw the screen
+                self._update_screen()
+                                                                                    
+                #make the most recently drawn screen visible
+                pygame.display.flip()
+                self.clock.tick(60)
+                sleep(1)
         return int(self.guess)
 
 
@@ -294,7 +307,7 @@ if __name__ == '__main__':
     hl.run_game()
 #-------------------------------------------------------------------------------------------------------------
 
-#43 Lines Through ToT
+#56 Lines Through ToT
 
 #Just some welcome and setting(s)
 #print()
@@ -308,20 +321,20 @@ if __name__ == '__main__':
 #if z=="y":
 #    showBotGuess=True
 #
-def validation(isFirstTime): #Created to not go more than 3 deep
-    """Makes sure a valid positive interger is entered, and repeats if not."""
-    
-    validGuess = False
-    while validGuess != True: #Make them keep trying until they get it right
-                if isFirstTime:
-                     guess=input("Enter your first guess ").strip()         
-                else:
-                     guess=input("Enter your next guess ").strip()                 
-                if guess.isdigit(): #Weeding out nonnumerical inputs and negative numbers so no errors occur. Also return false with a decimal point
-                    validGuess=True
-                else:
-                    print("Your guess must be a number")
-    return int(guess)
+#def validation(isFirstTime): #Created to not go more than 3 deep
+#    """Makes sure a valid positive interger is entered, and repeats if not."""
+#    
+#    validGuess = False
+#    while validGuess != True: #Make them keep trying until they get it right
+#                if isFirstTime:
+#                     guess=input("Enter your first guess ").strip()         
+#                else:
+#                     guess=input("Enter your next guess ").strip()                 
+#                if guess.isdigit(): #Weeding out nonnumerical inputs and negative numbers so no errors occur. Also return false with a decimal point
+#                    validGuess=True
+#                else:
+#                    print("Your guess must be a number")
+#    return int(guess)
 
 
 def round ():
