@@ -2,6 +2,18 @@
  You are told if the number is higher or lower than your guess each round. There are unlimited rounds
  with feedback in between each one showing stats to make it feel more like a built out text based game."""
 
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#                    JUST A RANDOM "N0TE FOR THIS SAVE AND PROBABLY ONE OR TWO MORE
+#       (the word N0TE was acting weird with the o so i replaced it with a zero. vs is happy now :D)
+#
+#          This code is widly inneficient and spagetti coded. I literally have the screen rendering in
+#      like 18 different places xD If this were a comp, I wouldn't care since nobody would look at my 
+#      code, but since this code will be looked at I am planning to fix it... eventually. I'm just trying
+#      to get everything runnable before messing it all up again. I then have commits to fall back on. Wow.
+#      I felt so intelligent writing that. Anyways, too much coding. At least it's proof I didn't chat it.
+#
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 from random import randint
 
 #-------------------------------------------------------------------------------------------------------------
@@ -110,6 +122,39 @@ class HighLow:
                 
                 for i in self.avgscore: self.average+= i
                 self.average /= len(self.avgscore)
+
+                self.tut.prep_custom_text(f"You have played {self.roundsPlayed} rounds and have gotten the following scores:")
+                self.tut.show_text()
+                #redraw the screen
+                self._update_screen()
+                                                                                            
+                #make the most recently drawn screen visible
+                pygame.display.flip()
+                self.clock.tick(60)
+                sleep(1)
+                #print(f"You have played {roundsPlayed} rounds and have gotten the following scores:")
+                #", ".join(str(i) for i in self.scores)
+                self.tut.prep_custom_text(", ".join(str(i) for i in self.scores))
+                #self.tut.prep_custom_text(*(str(i) for i in self.scores), sep=", ")
+                self.tut.show_text()
+                #redraw the screen
+                self._update_screen()
+                                                                                            
+                #make the most recently drawn screen visible
+                pygame.display.flip()
+                self.clock.tick(60)
+                sleep(1)
+                #print(*(str(i) for i in scores), sep=", ")
+                self.tut.prep_custom_text(f"Your Average Score Is {self.average:.2f} and Your Highscore Is {min(self.avgscore)}")
+                self.tut.show_text()
+                #redraw the screen
+                self._update_screen()
+                                                                                            
+                #make the most recently drawn screen visible
+                pygame.display.flip()
+                self.clock.tick(60)
+                sleep(1)
+                #print(f"Your Average Score Is {average:.2f} and Your Highscore Is {min(avgscore)}")
 
 
                 
@@ -227,7 +272,7 @@ class HighLow:
         sleep(0.5)
         if self.showBotGuess:
             self.tut.prep_custom_text(f"The Bot's Guess: {self.botGuess}")
-                    #redraw the screen
+            #redraw the screen
             self._update_screen()
                                                                             
             #make the most recently drawn screen visible
