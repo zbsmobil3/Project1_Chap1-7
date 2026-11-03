@@ -43,6 +43,8 @@ class HighLow:
         self.user_input=""
         self.enter_pressed=False
         self.validGuess = False
+        self.average=0
+        self.avgscore=[]
 
         #start Alien Invasion in an inactive state.
         self.game_active = False
@@ -90,10 +92,26 @@ class HighLow:
                     self.guess_analysis=self.guess_processing()
                     self.guess_display()
                 if self.guess == self.a:
-                        print("Congrats! You won the round! :D")
+                    self.tut.prep_custom_text("Congrats! You won the round! :D")
+                    self.scores.append(self.numGuesses)
                 else:
-                        print("The bot won :S")
+                    self.tut.prep_custom_text("The bot won :S")
+                    self.scores.append("LOST! (10)")
+                self.tut.show_text()
+                self.roundsPlayed += 1
+                #get average score
+                self.average=0
+                self.avgscore=[]
+                for i in range (len(self.scores)):
+                    if self.scores[i-1] == 'LOST! (10)':
+                        self.avgscore.append(10)
+                    else:
+                        self.avgscore.append(self.scores[i-1])                          
                 
+                for i in self.avgscore: self.average+= i
+                self.average /= len(self.avgscore)
+
+
                 
             else:
                 self._check_events()
@@ -332,7 +350,7 @@ if __name__ == '__main__':
     hl.run_game()
 #-------------------------------------------------------------------------------------------------------------
 
-#62 Lines Through T-T
+#82 Lines Through T-T
 
 #Just some welcome and setting(s)
 #print()
@@ -404,32 +422,32 @@ def round ():
         #if showBotGuess:
         #    print(f"The Bot's Guess: {botGuess}")
         #print(f"The Bot guessed {botOutput}")
-    if guess == a:
-         print("Congrats! You won the round! :D")
-    else:
-         print("The bot won :S")
+    #if guess == a:
+    #     print("Congrats! You won the round! :D")
+    #else:
+    #     print("The bot won :S")
 
     #Highscore logic will probably go here
-    global roundsPlayed
-    roundsPlayed += 1
-    global scores
-    if guess==a:
-        scores.append(numGuesses)
-    else:
-         scores.append("LOST! (10)")
+    #global roundsPlayed
+    #roundsPlayed += 1
+    #global scores
+    #if guess==a:
+    #    scores.append(numGuesses)
+    #else:
+    #     scores.append("LOST! (10)")
 
     #Get average score
-    average=0
-    avgscore=[]
-    for i in range (len(scores)):
-        if scores[i-1] == 'LOST! (10)':
-            avgscore.append(10)
-        else:
-             avgscore.append(scores[i-1])
+    #average=0
+    #avgscore=[]
+    #for i in range (len(scores)):
+    #    if scores[i-1] == 'LOST! (10)':
+    #        avgscore.append(10)
+    #    else:
+    #         avgscore.append(scores[i-1])
              
 
-    for i in avgscore: average+= i
-    average /= len(avgscore)
+    #for i in avgscore: average+= i
+    #average /= len(avgscore)
 
     #Output
     print(f"You have played {roundsPlayed} rounds and have gotten the following scores:")
