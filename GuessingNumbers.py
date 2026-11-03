@@ -79,14 +79,21 @@ class HighLow:
 
         while True:    
             if self.game_active:
-                if (self.botLow == self.low) & (self.botHigh == self.high): #Seeing if it is the first time in the round
-                    self.guess = self.validation(True)
+                while not ((self.guess == self.a) or (self.guess == self.a)):
+                    self.botGuess=randint(self.botLow,self.botHigh)
+                    if (self.botLow == self.low) & (self.botHigh == self.high): #Seeing if it is the first time in the round
+                        self.guess = self.validation(True)
+                    else:
+                        self.guess = self.validation(False)
+
+                    self.botGuess=randint(self.botLow,self.botHigh)
+                    self.guess_analysis=self.guess_processing()
+                    self.guess_display()
+                if self.guess == self.a:
+                        print("Congrats! You won the round! :D")
                 else:
-                    self.guess = self.validation(False)
+                        print("The bot won :S")
                 
-                self.botGuess=randint(self.botLow,self.botHigh)
-                self.guess_analysis=self.guess_processing()
-                self.guess_display()
                 
             else:
                 self._check_events()
@@ -159,11 +166,7 @@ class HighLow:
             except:
                 print("There were less than 1 charachters")
         elif event.key == pygame.K_RETURN and check_str_input:
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             self.enter_pressed=True
-#                USER HAS SUMBITTED INPUT
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-            pass
 
         #elif event.key == pygame.K_SPACE:
             #self._fire_bullet()
@@ -191,14 +194,39 @@ class HighLow:
             self.botLow=self.botGuess+1
             self.botOutput="low"
         else:
-            return()
+            self.botOutput="right on!"
         return(output)
         
     def guess_display(self):
         self.tut.prep_custom_text(f"You guessed {self.guess_analysis}")
+        #redraw the screen
+        self._update_screen()
+                                                                            
+        #make the most recently drawn screen visible
+        pygame.display.flip()
+        self.clock.tick(60)
+        
+        sleep(0.5)
         if self.showBotGuess:
             self.tut.prep_custom_text(f"The Bot's Guess: {self.botGuess}")
+                    #redraw the screen
+            self._update_screen()
+                                                                            
+            #make the most recently drawn screen visible
+            pygame.display.flip()
+            self.clock.tick(60)
+        
+            sleep(0.5)
         self.tut.prep_custom_text(f"The Bot guessed {self.botOutput}")
+                #redraw the screen
+        self._update_screen()
+                                                                            
+        #make the most recently drawn screen visible
+        pygame.display.flip()
+        self.clock.tick(60)
+        
+        sleep(0.5)
+
 
     def validation(self,isFirstTime): #Created to not go more than 3 deep
         """Makes sure a valid positive interger is entered, and repeats if not."""
@@ -220,7 +248,6 @@ class HighLow:
         sleep(0.5)
 
         while not self.validGuess: #Make them keep trying until they get it right
-            print(self.validGuess)    
             while not self.enter_pressed:
                 self._check_events(True)
                 if not self.user_input == "":
@@ -237,10 +264,8 @@ class HighLow:
             self.guess=(self.user_input).strip()
             self.user_input=""
             
-            #self.guess=input("Enter your next guess ").strip()   
-            print(f"[{self.guess}]")              
+            #self.guess=input("Enter your next guess ").strip()         
             if self.guess.isdigit(): #Weeding out nonnumerical inputs and negative numbers so no errors occur. Also return false with a decimal point
-                print("something worked")
                 self.validGuess=True
             else:
                 self.tut.prep_custom_text("Your guess must be a number")
@@ -307,7 +332,7 @@ if __name__ == '__main__':
     hl.run_game()
 #-------------------------------------------------------------------------------------------------------------
 
-#56 Lines Through ToT
+#62 Lines Through T-T
 
 #Just some welcome and setting(s)
 #print()
@@ -353,12 +378,12 @@ def round ():
     #guess=high+1 #This is so it is always outside of the range
     #output=""
 
-    while guess != a: #This isn't really needed since I'm using a break instead.
-        botGuess=randint(botLow,botHigh)
-        if (botLow == low) & (botHigh == high): #Seeing if it is the first time in the round
-            guess = validation(True)
-        else:
-            guess = validation(False)
+    #while guess != a: #This isn't really needed since I'm using a break instead.
+        #botGuess=randint(botLow,botHigh)
+        #if (botLow == low) & (botHigh == high): #Seeing if it is the first time in the round
+        #    guess = validation(True)
+        #else:
+        #    guess = validation(False)
         #numGuesses +=1
         #if guess > a:
         #    output="high"
