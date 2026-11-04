@@ -42,24 +42,9 @@ class HighLow:
         self.low=0 #Just making low and high in case I want to change it later
         self.high=100
           
-        
-        #SETTING UP VARS:
-        self.scores=[]
-        self.roundsPlayed=0
-        self.a=randint(self.low,self.high) #Our random num for the round
-        self.numGuesses=0
-        self.botLow=self.low
-        self.botHigh=self.high
-        self.guess=self.high+1 #This is so it is always outside of the range
-        self.botGuess=self.guess
-        self.output=""
-        self.user_input=""
-        self.enter_pressed=False
-        self.validGuess = False
-        self.average=0
-        self.avgscore=[]
+        self._set_up_one_time_vars()
+        self._set_up_every_round_vars()
 
-        #start Alien Invasion in an inactive state.
         self.game_active = False
         
         self.clock= pygame.time.Clock()
@@ -94,6 +79,7 @@ class HighLow:
 
         while True:    
             if self.game_active:
+                self._set_up_every_round_vars()
                 while not ((self.guess == self.a) or (self.botGuess == self.a)):
                     self.botGuess=randint(self.botLow,self.botHigh)
                     if (self.botLow == self.low) & (self.botHigh == self.high): #Seeing if it is the first time in the round
@@ -169,7 +155,6 @@ class HighLow:
                 self.clock.tick(60)
 
                 sleep(0.5)
-                print(self.validGuess)
                 self.validGuess=False
                 while not self.validGuess: #Make them keep trying until they get it right
                     while not self.enter_pressed:
@@ -222,6 +207,30 @@ class HighLow:
             #make the most recently drawn screen visible
             pygame.display.flip()
             self.clock.tick(60)
+#
+#           I'LL PROBABLY MOVE THIS TO IT'S OWN SCRIPT CALLED SETTINGS
+#
+    def _set_up_one_time_vars(self):
+        """A class to set up vars. Were you expecting smth else???"""
+        #SETTING UP VARS:
+        self.scores=[]
+        self.roundsPlayed=0
+
+      
+
+    def _set_up_every_round_vars(self): #I don't know if I could've made that function name any longer :B
+        self.a=randint(self.low,self.high) #Our random num for the round
+        self.numGuesses=0
+        self.botLow=self.low
+        self.botHigh=self.high
+        self.guess=self.high+1 #This is so it is always outside of the range
+        self.botGuess=self.guess
+        self.output=""
+        self.user_input=""
+        self.enter_pressed=False
+        self.validGuess = False
+        self.average=0
+        self.avgscore=[]  
 
     def _check_events(self, check_str_input=False):
         """Watch for keyboard and mouse inputs"""
