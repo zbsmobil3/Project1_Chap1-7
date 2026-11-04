@@ -2,32 +2,15 @@
  You are told if the number is higher or lower than your guess each round. There are unlimited rounds
  with feedback in between each one showing stats to make it feel more like a built out text based game."""
 
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#                    JUST A RANDOM "N0TE FOR THIS SAVE AND PROBABLY ONE OR TWO MORE
-#       (the word N0TE was acting weird with the o so i replaced it with a zero. vs is happy now :D)
-#
-#          This code is widly inneficient and spagetti coded. I literally have the screen rendering in
-#      like 18 different places xD If this were a comp, I wouldn't care since nobody would look at my 
-#      code, but since this code will be looked at I am planning to fix it... eventually. I'm just trying
-#      to get everything runnable before messing it all up again. I then have commits to fall back on. Wow.
-#      I felt so intelligent writing that. Anyways, too much coding. At least it's proof I didn't chat it.
-#
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
 from random import randint
 
-#-------------------------------------------------------------------------------------------------------------
 import sys
 from time import sleep
 import pygame
 
 #from settings import Settings
-#from game_stats import GameStats
 from Tutorial import Intro
 from button import Button
-#from ship import Ship
-#from bullet import Bullet
-#from alien import Alien
 
 
 class HighLow:
@@ -112,47 +95,23 @@ class HighLow:
 
                 self.tut.prep_custom_text(f"You have played {self.roundsPlayed} rounds and have gotten the following scores:")
                 self.tut.show_text()
-                #redraw the screen
-                self._update_screen()
-                                                                                            
-                #make the most recently drawn screen visible
-                pygame.display.flip()
-                self.clock.tick(60)
+                self.refresh_screen()
                 sleep(1)
-                #print(f"You have played {roundsPlayed} rounds and have gotten the following scores:")
-                #", ".join(str(i) for i in self.scores)
+
                 self.tut.prep_custom_text(", ".join(str(i) for i in self.scores))
-                #self.tut.prep_custom_text(*(str(i) for i in self.scores), sep=", ")
                 self.tut.show_text()
-                #redraw the screen
-                self._update_screen()
-                                                                                            
-                #make the most recently drawn screen visible
-                pygame.display.flip()
-                self.clock.tick(60)
+                self.refresh_screen()
                 sleep(1)
-                #print(*(str(i) for i in scores), sep=", ")
+
                 self.tut.prep_custom_text(f"Your Average Score Is {self.average:.2f} and Your Highscore Is {min(self.avgscore)}")
                 self.tut.show_text()
-                #redraw the screen
-                self._update_screen()
-                                                                                            
-                #make the most recently drawn screen visible
-                pygame.display.flip()
-                self.clock.tick(60)
+                self.refresh_screen()
                 sleep(1)
-                #print(f"Your Average Score Is {average:.2f} and Your Highscore Is {min(avgscore)}")
 
                 self.tut.prep_custom_text("Do you want to play again? (y/n) ")
-                #newRound=input("Do you want to play again? (y/n) ")
                 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#redraw the screen
-                self._update_screen()
-                                                                    
-                #make the most recently drawn screen visible
-                pygame.display.flip()
-                self.clock.tick(60)
+                self.refresh_screen()
 
                 sleep(0.5)
                 self.validGuess=False
@@ -161,30 +120,19 @@ class HighLow:
                         self._check_events(True)
                         if not self.user_input == "":
                             self.tut.prep_custom_text(self.user_input)
-                        #redraw the screen
-                        self._update_screen()
-                                                    
-                        #make the most recently drawn screen visible
-                        pygame.display.flip()
-                        self.clock.tick(60)
-                        #self.guess=input("Enter your first guess ").strip() 
+                        self.refresh_screen()
+  
                     self.enter_pressed=False 
 
                     self.guess=(self.user_input).strip()
                     self.user_input=""
-            
-                    #self.guess=input("Enter your next guess ").strip()         
+                 
                     if self.guess== "y" or self.guess=="n":
                         self.validGuess=True
                     else:
                         self.tut.prep_custom_text(f"Your must enter y or n. \n Do you want to play again? (y/n) ")
 
-                        #redraw the screen
-                        self._update_screen()
-                                                                                    
-                        #make the most recently drawn screen visible
-                        pygame.display.flip()
-                        self.clock.tick(60)
+                        self.refresh_screen()
                         sleep(1)
                 self.newRound=self.guess
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -201,15 +149,16 @@ class HighLow:
                 #self._update_bullets()
                 #self._update_aliens()
             
-            #redraw the screen
-            self._update_screen()
-            
-            #make the most recently drawn screen visible
-            pygame.display.flip()
-            self.clock.tick(60)
-#
-#           I'LL PROBABLY MOVE THIS TO IT'S OWN SCRIPT CALLED SETTINGS
-#
+            self.refresh_screen()
+
+    def refresh_screen(self):
+        #redraw the screen
+        self._update_screen()
+                                                                                            
+        #make the most recently drawn screen visible
+        pygame.display.flip()
+        self.clock.tick(60)      
+    
     def _set_up_one_time_vars(self):
         """A class to set up vars. Were you expecting smth else???"""
         #SETTING UP VARS:
@@ -323,31 +272,16 @@ class HighLow:
         
     def guess_display(self):
         self.tut.prep_custom_text(f"You guessed {self.guess_analysis}")
-        #redraw the screen
-        self._update_screen()
-                                                                            
-        #make the most recently drawn screen visible
-        pygame.display.flip()
-        self.clock.tick(60)
+        self.refresh_screen()
         
         sleep(0.5)
         if self.showBotGuess:
             self.tut.prep_custom_text(f"The Bot's Guess: {self.botGuess}")
-            #redraw the screen
-            self._update_screen()
-                                                                            
-            #make the most recently drawn screen visible
-            pygame.display.flip()
-            self.clock.tick(60)
+            self.refresh_screen()
         
             sleep(0.5)
         self.tut.prep_custom_text(f"The Bot guessed {self.botOutput}")
-                #redraw the screen
-        self._update_screen()
-                                                                            
-        #make the most recently drawn screen visible
-        pygame.display.flip()
-        self.clock.tick(60)
+        self.refresh_screen()
         
         sleep(0.5)
 
@@ -362,12 +296,7 @@ class HighLow:
             self.tut.prep_custom_text("Enter your first guess ")
         else:
             self.tut.prep_custom_text("Enter your next guess ")
-        #redraw the screen
-        self._update_screen()
-                                                                    
-        #make the most recently drawn screen visible
-        pygame.display.flip()
-        self.clock.tick(60)
+        self.refresh_screen()
 
         sleep(0.5)
 
@@ -376,30 +305,19 @@ class HighLow:
                 self._check_events(True)
                 if not self.user_input == "":
                     self.tut.prep_custom_text(self.user_input)
-                #redraw the screen
-                self._update_screen()
-                                                    
-                #make the most recently drawn screen visible
-                pygame.display.flip()
-                self.clock.tick(60)
-                #self.guess=input("Enter your first guess ").strip() 
+                self.refresh_screen()
+
             self.enter_pressed=False 
 
             self.guess=(self.user_input).strip()
             self.user_input=""
-            
-            #self.guess=input("Enter your next guess ").strip()         
+                  
             if self.guess.isdigit(): #Weeding out nonnumerical inputs and negative numbers so no errors occur. Also return false with a decimal point
                 self.validGuess=True
             else:
                 self.tut.prep_custom_text("Your guess must be a number")
                 
-                #redraw the screen
-                self._update_screen()
-                                                                                    
-                #make the most recently drawn screen visible
-                pygame.display.flip()
-                self.clock.tick(60)
+                self.refresh_screen()
                 sleep(1)
         return int(self.guess)
 
@@ -454,116 +372,3 @@ if __name__ == '__main__':
     #make a game instance and run
     hl=HighLow()
     hl.run_game()
-#-------------------------------------------------------------------------------------------------------------
-
-#85 Lines Through :)
-
-#Just some welcome and setting(s)
-#print()
-#print("Welcome to the Number Guessing Game!")
-#print("Each Round you try to guess a number between 1 and 100")
-#print("And get told whether you guessed above or below the number")
-#print("You are guessing against a bot")
-#input("Press enter to continue ")
-#print()
-#z=input("Would you like to see the bot's guesses? (y/n) ")
-#if z=="y":
-#    showBotGuess=True
-#
-#def validation(isFirstTime): #Created to not go more than 3 deep
-#    """Makes sure a valid positive interger is entered, and repeats if not."""
-#    
-#    validGuess = False
-#    while validGuess != True: #Make them keep trying until they get it right
-#                if isFirstTime:
-#                     guess=input("Enter your first guess ").strip()         
-#                else:
-#                     guess=input("Enter your next guess ").strip()                 
-#                if guess.isdigit(): #Weeding out nonnumerical inputs and negative numbers so no errors occur. Also return false with a decimal point
-#                    validGuess=True
-#                else:
-#                    print("Your guess must be a number")
-#    return int(guess)
-
-
-def round ():
-    """The Core Loop, run each Round"""
-
-    #numGuesses=0
-    #low=0 #Just making low and high in case I want to change it later
-    #high=100
-    #a=randint(low,high) #Our random num for the round
-
-    #botLow=low
-    #botHigh=high
-
-  
-
-    #guess=high+1 #This is so it is always outside of the range
-    #output=""
-
-    #while guess != a: #This isn't really needed since I'm using a break instead.
-        #botGuess=randint(botLow,botHigh)
-        #if (botLow == low) & (botHigh == high): #Seeing if it is the first time in the round
-        #    guess = validation(True)
-        #else:
-        #    guess = validation(False)
-        #numGuesses +=1
-        #if guess > a:
-        #    output="high"
-        #elif guess < a:
-        #    output="low"
-        #else:
-        #    output="right on!"
-        #    break
-        #if botGuess > a:
-        #     botHigh=botGuess-1
-        #     botOutput="high"
-        #elif botGuess < a:
-        #    botLow=botGuess+1
-        #    botOutput="low"
-        #else:
-        #    break
-        #print(f"You guessed {output}")
-        #if showBotGuess:
-        #    print(f"The Bot's Guess: {botGuess}")
-        #print(f"The Bot guessed {botOutput}")
-    #if guess == a:
-    #     print("Congrats! You won the round! :D")
-    #else:
-    #     print("The bot won :S")
-
-    #Highscore logic will probably go here
-    #global roundsPlayed
-    #roundsPlayed += 1
-    #global scores
-    #if guess==a:
-    #    scores.append(numGuesses)
-    #else:
-    #     scores.append("LOST! (10)")
-
-    #Get average score
-    #average=0
-    #avgscore=[]
-    #for i in range (len(scores)):
-    #    if scores[i-1] == 'LOST! (10)':
-    #        avgscore.append(10)
-    #    else:
-    #         avgscore.append(scores[i-1])
-             
-
-    #for i in avgscore: average+= i
-    #average /= len(avgscore)
-
-    #Output
-    #print(f"You have played {roundsPlayed} rounds and have gotten the following scores:")
-    #print(*(str(i) for i in scores), sep=", ")
-    #print(f"Your Average Score Is {average:.2f} and Your Highscore Is {min(avgscore)}")
-
-    newRound=input("Do you want to play again? (y/n) ")
-    if newRound=="y":
-         round()
-
-#Main Body of Code
-round()   
-        
