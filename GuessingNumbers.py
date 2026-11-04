@@ -51,6 +51,7 @@ class HighLow:
         self.botLow=self.low
         self.botHigh=self.high
         self.guess=self.high+1 #This is so it is always outside of the range
+        self.botGuess=self.guess
         self.output=""
         self.user_input=""
         self.enter_pressed=False
@@ -93,7 +94,7 @@ class HighLow:
 
         while True:    
             if self.game_active:
-                while not ((self.guess == self.a) or (self.guess == self.a)):
+                while not ((self.guess == self.a) or (self.botGuess == self.a)):
                     self.botGuess=randint(self.botLow,self.botHigh)
                     if (self.botLow == self.low) & (self.botHigh == self.high): #Seeing if it is the first time in the round
                         self.guess = self.validation(True)
@@ -155,6 +156,57 @@ class HighLow:
                 self.clock.tick(60)
                 sleep(1)
                 #print(f"Your Average Score Is {average:.2f} and Your Highscore Is {min(avgscore)}")
+
+                self.tut.prep_custom_text("Do you want to play again? (y/n) ")
+                #newRound=input("Do you want to play again? (y/n) ")
+                
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#redraw the screen
+                self._update_screen()
+                                                                    
+                #make the most recently drawn screen visible
+                pygame.display.flip()
+                self.clock.tick(60)
+
+                sleep(0.5)
+                print(self.validGuess)
+                self.validGuess=False
+                while not self.validGuess: #Make them keep trying until they get it right
+                    while not self.enter_pressed:
+                        self._check_events(True)
+                        if not self.user_input == "":
+                            self.tut.prep_custom_text(self.user_input)
+                        #redraw the screen
+                        self._update_screen()
+                                                    
+                        #make the most recently drawn screen visible
+                        pygame.display.flip()
+                        self.clock.tick(60)
+                        #self.guess=input("Enter your first guess ").strip() 
+                    self.enter_pressed=False 
+
+                    self.guess=(self.user_input).strip()
+                    self.user_input=""
+            
+                    #self.guess=input("Enter your next guess ").strip()         
+                    if self.guess== "y" or self.guess=="n":
+                        self.validGuess=True
+                    else:
+                        self.tut.prep_custom_text(f"Your must enter y or n. \n Do you want to play again? (y/n) ")
+
+                        #redraw the screen
+                        self._update_screen()
+                                                                                    
+                        #make the most recently drawn screen visible
+                        pygame.display.flip()
+                        self.clock.tick(60)
+                        sleep(1)
+                self.newRound=self.guess
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                       
+                
+                if self.newRound=="n":
+                    self.game_active=False 
 
 
                 
@@ -395,7 +447,7 @@ if __name__ == '__main__':
     hl.run_game()
 #-------------------------------------------------------------------------------------------------------------
 
-#82 Lines Through T-T
+#85 Lines Through :)
 
 #Just some welcome and setting(s)
 #print()
@@ -495,9 +547,9 @@ def round ():
     #average /= len(avgscore)
 
     #Output
-    print(f"You have played {roundsPlayed} rounds and have gotten the following scores:")
-    print(*(str(i) for i in scores), sep=", ")
-    print(f"Your Average Score Is {average:.2f} and Your Highscore Is {min(avgscore)}")
+    #print(f"You have played {roundsPlayed} rounds and have gotten the following scores:")
+    #print(*(str(i) for i in scores), sep=", ")
+    #print(f"Your Average Score Is {average:.2f} and Your Highscore Is {min(avgscore)}")
 
     newRound=input("Do you want to play again? (y/n) ")
     if newRound=="y":
