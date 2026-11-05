@@ -1,10 +1,7 @@
-import pygame.font
 try:
-    from pygame.sprite import Group
+    import pygame.font
 except:
     pass
-
-#from ship import Ship
 
 class Intro:
     """A class to show the wall of text that is the tutorial."""

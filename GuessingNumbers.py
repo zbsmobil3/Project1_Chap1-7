@@ -22,36 +22,24 @@ class HighLow:
 
         #SETTINGS:
         self.showBotGuess=False        
-        self.low=0 #Just making low and high in case I want to change it later
+        self.low=0 #just making low and high in case I want to change it later
         self.high=100
-          
+ 
         self._set_up_one_time_vars()
         self._set_up_every_round_vars()
 
         self.game_active = False
         
         self.clock= pygame.time.Clock()
-        #self.settings=Settings()
 
         self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
-        #self.settings.screen_width = self.screen.get_rect().width
-        #self.settings.screen_height = self.screen.get_rect().height
-
 
         pygame.display.set_caption("High Low")
-        #i'll probably create an icon here later
 
-        #create an instance to store game statistics, and create a scoreboard.
-        #self.stats = GameStats(self)
+        #create an instance to display text.
         self.tut = Intro(self)
 
         self.bg_clr=(0,0,0)
-
-        #self.ship=Ship(self)
-        #self.bullets = pygame.sprite.Group()
-        #self.aliens = pygame.sprite.Group()
-
-        #self._create_fleet()
 
         #make the Play button.
         self.play_button = Button(self, "Start")
@@ -79,7 +67,6 @@ class HighLow:
                 else:
                     self.tut.prep_custom_text("The bot won :S")
                     self.scores.append("LOST! (10)")
-                self.tut.show_text()
                 self.roundsPlayed += 1
                 #get average score
                 self.average=0
@@ -94,23 +81,20 @@ class HighLow:
                 self.average /= len(self.avgscore)
 
                 self.tut.prep_custom_text(f"You have played {self.roundsPlayed} rounds and have gotten the following scores:")
-                self.tut.show_text()
                 self.refresh_screen()
                 sleep(1)
 
                 self.tut.prep_custom_text(", ".join(str(i) for i in self.scores))
-                self.tut.show_text()
+
                 self.refresh_screen()
                 sleep(1)
 
                 self.tut.prep_custom_text(f"Your Average Score Is {self.average:.2f} and Your Highscore Is {min(self.avgscore)}")
-                self.tut.show_text()
                 self.refresh_screen()
                 sleep(1)
 
                 self.tut.prep_custom_text("Do you want to play again? (y/n) ")
                 
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                 self.refresh_screen()
 
                 sleep(0.5)
@@ -134,20 +118,13 @@ class HighLow:
 
                         self.refresh_screen()
                         sleep(1)
-                self.newRound=self.guess
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                       
+                self.newRound=self.guess                      
                 
                 if self.newRound=="n":
                     self.game_active=False 
-
-
                 
             else:
                 self._check_events()
-                #self.ship.update()
-                #self._update_bullets()
-                #self._update_aliens()
             
             self.refresh_screen()
 
@@ -163,9 +140,7 @@ class HighLow:
         """A class to set up vars. Were you expecting smth else???"""
         #SETTING UP VARS:
         self.scores=[]
-        self.roundsPlayed=0
-
-      
+        self.roundsPlayed=0   
 
     def _set_up_every_round_vars(self): #I don't know if I could've made that function name any longer :B
         self.a=randint(self.low,self.high) #Our random num for the round
@@ -184,16 +159,14 @@ class HighLow:
     def _check_events(self, check_str_input=False):
         """Watch for keyboard and mouse inputs"""
         for event in pygame.event.get():
-            #if event.type == pygame.QUIT:
-                #sys.exit()
-            if event.type == pygame.MOUSEBUTTONDOWN:
+            if event.type == pygame.QUIT:
+                sys.exit()
+            elif event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = pygame.mouse.get_pos()
                 self._check_play_button(mouse_pos)
                 self._check_no_button(mouse_pos)
             elif event.type == pygame.KEYDOWN:
                 self._check_keydown_events(event,check_str_input)
-            #elif event.type == pygame.KEYUP:
-                #self._check_keyup_events(event)
             elif event.type == pygame.TEXTINPUT and check_str_input:
                 self.user_input += event.text
             
@@ -219,18 +192,10 @@ class HighLow:
                 self.play_button = Button(self, "Yes", "one")
             elif self.play_button.msg == "Yes":
                 self.showBotGuess=True
-                self.game_active = True
-
-            #hide the mouse cursor.
-            #pygame.mouse.set_visible(False)
-            
+                self.game_active = True           
 
     def _check_keydown_events(self, event, check_str_input=False):
         """Respond to keypresses."""
-        #if event.key == pygame.K_RIGHT:
-            #self.ship.moving_right = True
-        #elif event.key == pygame.K_LEFT:
-            #self.ship.moving_left = True
         if event.key == pygame.K_q:
             sys.exit()
         elif event.key == pygame.K_BACKSPACE and check_str_input:
@@ -240,16 +205,6 @@ class HighLow:
                 print("There were less than 1 charachters")
         elif event.key == pygame.K_RETURN and check_str_input:
             self.enter_pressed=True
-
-        #elif event.key == pygame.K_SPACE:
-            #self._fire_bullet()
-
-    #def _check_keyup_events(self, event):
-        #"""Respond to key releases."""
-        #if event.key == pygame.K_RIGHT:
-            #self.ship.moving_right = False
-        #elif event.key == pygame.K_LEFT:
-            #self.ship.moving_left = False
 
     def guess_processing(self):
         self.numGuesses +=1
@@ -286,7 +241,7 @@ class HighLow:
         sleep(0.5)
 
 
-    def validation(self,isFirstTime): #Created to not go more than 3 deep
+    def validation(self,isFirstTime):
         """Makes sure a valid positive interger is entered, and repeats if not."""
     
         self.validGuess = False
@@ -297,7 +252,6 @@ class HighLow:
         else:
             self.tut.prep_custom_text("Enter your next guess ")
         self.refresh_screen()
-
         sleep(0.5)
 
         while not self.validGuess: #Make them keep trying until they get it right
@@ -308,60 +262,24 @@ class HighLow:
                 self.refresh_screen()
 
             self.enter_pressed=False 
-
             self.guess=(self.user_input).strip()
             self.user_input=""
-                  
-            if self.guess.isdigit(): #Weeding out nonnumerical inputs and negative numbers so no errors occur. Also return false with a decimal point
-                self.validGuess=True
+            #Weeding out nonnumerical inputs and negative numbers so no errors occur. Also return false with a decimal point
+            if self.guess.isdigit(): 
+                self.validGuess=True      
             else:
-                self.tut.prep_custom_text("Your guess must be a number")
-                
+                self.tut.prep_custom_text("Your guess must be a number")                
                 self.refresh_screen()
                 sleep(1)
         return int(self.guess)
 
-
-
-    #def _create_fleet(self):
-        #"""Create the fleet of aliens."""
-        #create an alien and keep adding aliens until there's no room left.
-        #spacing between aliens is one alien width and one alien height.
-        #alien = Alien(self)
-        #alien_width, alien_height = alien.rect.size
-
-        #current_x, current_y = alien_width, alien_height
-        #while current_y < (self.settings.screen_height - 3 * alien_height):
-            #while current_x < (self.settings.screen_width - 2 * alien_width):
-                #self._create_alien(current_x, current_y)
-                #current_x += 2 * alien_width
-
-            #finished a row; reset x value, and increment y value.
-            #current_x = alien_width
-            #current_y += 2 * alien_height
-
-    #def _create_alien(self, x_position, y_position):
-        #"""Create an alien and place it in the fleet."""
-        #new_alien = Alien(self)
-        #new_alien.x = x_position
-        #new_alien.rect.x = x_position
-        #new_alien.rect.y = y_position
-        #self.aliens.add(new_alien)         
-
-
-
     def _update_screen(self):
         """Update images on the screen, and flip to the new screen."""
         self.screen.fill(self.bg_clr)
-        #for bullet in self.bullets.sprites():
-            #bullet.draw_bullet()
-        #self.ship.blitme()
-        #self.aliens.draw(self.screen)
 
-        #draw the score information.
-        self.tut.show_text()
-        
-        #draw the play button if the game is inactive.
+        #display text
+        self.tut.show_text()     
+        #draw buttons if the game is inactive.
         if not self.game_active:
             self.play_button.draw_button() 
             if self.no_button.msg != "":
