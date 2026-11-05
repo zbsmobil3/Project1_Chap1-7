@@ -1,3 +1,6 @@
+"""GuessingNumbers by Zach Stull. This file holds the class Button which generates all the buttons, 
+I used some starter code from Alien Invasions, 11/4/26. """
+
 import pygame.font
 
 class Button:
@@ -31,10 +34,15 @@ class Button:
 
     def _prep_msg(self, msg):
         """Turn msg into a rendered image and center text on the button."""
-        self.msg_image = self.font.render(msg, True, self.text_color,
-                self.button_color)
-        self.msg_image_rect = self.msg_image.get_rect()
-        self.msg_image_rect.center = self.rect.center
+        try:
+            self.msg_image = self.font.render(msg, True, self.text_color,
+                    self.button_color)
+        except:
+            pass
+        else:
+            self.msg_image_rect = self.msg_image.get_rect()
+            self.msg_image_rect.center = self.rect.center
+            return("Sucsess!")
 
     def draw_button(self):
         """Draw blank button and then draw message."""

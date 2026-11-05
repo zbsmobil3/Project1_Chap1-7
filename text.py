@@ -1,3 +1,7 @@
+"""GuessingNumbers by Zach Stull. This file holds the intro class which handles all my text,
+some starter code was used from alien invasion. It's definetly changed since then, 11/4/26. """
+
+
 try:
     import pygame.font
 except:
@@ -25,13 +29,17 @@ class Intro:
 
     def prep_custom_text(self, text):
         """Render the text"""
-        self.text_image = self.font.render(f"{text}", True,
-                self.text_color)
-    
-        #display the score at the top right of the screen.
-        self.text_rect = self.text_image.get_rect()
-        self.text_rect.center = self.screen_rect.center
-        self.text_rect.top = 20
+        try:
+            self.text_image = self.font.render(f"{text}", True,
+                   self.text_color)
+        except:
+            return("fail")
+        else:
+            #display the score at the top right of the screen.
+            self.text_rect = self.text_image.get_rect()
+            self.text_rect.center = self.screen_rect.center
+            self.text_rect.top = 20
+            return("Sucsessful!")
         
     def prep_tut(self):
         """Render the text"""

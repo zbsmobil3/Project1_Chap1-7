@@ -1,6 +1,9 @@
-"""A guessing game between you and a bot to be the first to guess the random number between 1 and 100.
+"""GuessingNumbers by Zach Stull. The main file to host the class HighLow, which runs the game
+A guessing game between you and a bot to be the first to guess the random number between 1 and 100.
  You are told if the number is higher or lower than your guess each round. There are unlimited rounds
- with feedback in between each one showing stats to make it feel more like a built out text based game."""
+ with feedback in between each one showing stats to make it feel more like a built out text based game.
+ It was built out of Project 1 code. Alien Invasion code was used for the basic outline and frame and was left
+ sitting in many commits. 11/4/26"""
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #    I didn't make the game look nice and pretty, or even move it away from being entirely text based,
@@ -30,30 +33,22 @@ class HighLow:
         self.showBotGuess=False        
         self.low=0 #just making low and high in case I want to change it later
         self.high=100
- 
+
         self._set_up_one_time_vars()
         self._set_up_every_round_vars()
-
-        self.game_active = False
-        
+        self.game_active = False       
         self.clock= pygame.time.Clock()
-
         self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
-
         pygame.display.set_caption("High Low")
-
         #create an instance to display text.
         self.tut = Intro(self)
-
         self.bg_clr=(0,0,0)
-
         #make the Play button.
         self.play_button = Button(self, "Start")
         self.no_button = Button(self, "")
 
     def run_game(self):
         """Houses main gameloop"""
-
         while True:    
             if self.game_active:
                 self._set_up_every_round_vars()
@@ -63,7 +58,6 @@ class HighLow:
                         self.guess = self.validation(True)
                     else:
                         self.guess = self.validation(False)
-
                     self.botGuess=randint(self.botLow,self.botHigh)
                     self.guess_analysis=self.guess_processing()
                     self.guess_display()
@@ -81,30 +75,16 @@ class HighLow:
                     if self.scores[i-1] == 'LOST! (10)':
                         self.avgscore.append(10)
                     else:
-                        self.avgscore.append(self.scores[i-1])                          
-                
+                        self.avgscore.append(self.scores[i-1])                                        
                 for i in self.avgscore: self.average+= i
                 self.average /= len(self.avgscore)
-
                 self.tut.prep_custom_text(f"You have played {self.roundsPlayed} rounds and have gotten the following scores: \n"
                                           +(", ".join(str(i) for i in self.scores))+f"\n"
                                           +(f"Your Average Score Is {self.average:.2f} \nYour Highscore Is {min(self.avgscore)}"))
                 self.refresh_screen()
                 sleep(4)
-
-                #self.tut.prep_custom_text(", ".join(str(i) for i in self.scores))
-
-                #self.refresh_screen()
-                #sleep(1)
-
-                #self.tut.prep_custom_text(f"Your Average Score Is {self.average:.2f} \nYour Highscore Is {min(self.avgscore)}")
-                #self.refresh_screen()
-                #sleep(1)
-
                 self.tut.prep_custom_text("Do you want to play again? (y/n) ")
-                
                 self.refresh_screen()
-
                 sleep(0.5)
                 self.validGuess=False
                 while not self.validGuess: #Make them keep trying until they get it right
@@ -112,22 +92,17 @@ class HighLow:
                         self._check_events(True)
                         if not self.user_input == "":
                             self.tut.prep_custom_text(self.user_input)
-                        self.refresh_screen()
-  
+                        self.refresh_screen() 
                     self.enter_pressed=False 
-
                     self.guess=(self.user_input).strip()
-                    self.user_input=""
-                 
+                    self.user_input=""                
                     if self.guess== "y" or self.guess=="n":
                         self.validGuess=True
                     else:
                         self.tut.prep_custom_text(f"Your must enter y or n. \n Do you want to play again? (y/n) ")
-
                         self.refresh_screen()
                         sleep(1)
-                self.newRound=self.guess                      
-                
+                self.newRound=self.guess                                     
                 if self.newRound=="n":
                     self.game_active=False 
                 
@@ -139,8 +114,7 @@ class HighLow:
     def refresh_screen(self):
         """Updates the screen"""
         #redraw the screen
-        self._update_screen()
-                                                                                            
+        self._update_screen()                                                                                            
         #make the most recently drawn screen visible
         pygame.display.flip()
         self.clock.tick(60)      
@@ -245,9 +219,7 @@ class HighLow:
         else:
             self.tut.prep_custom_text((f"You guessed {self.guess_analysis}\n")
                                               +(f"The Bot guessed {self.botOutput}"))
-
-        self.refresh_screen()
-                
+        self.refresh_screen()              
         sleep(2)
 
     def validation(self,isFirstTime):
