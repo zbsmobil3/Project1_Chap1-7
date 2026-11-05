@@ -15,7 +15,7 @@ class Intro:
         self.screen_rect = self.screen.get_rect()
 
         #font settings for scoring information.
-        self.text_color = (100, 100, 100)
+        self.text_color = (200, 200, 200)
         self.font = pygame.font.SysFont(None, 48)
 
         #prepare the initial score image.
@@ -23,8 +23,6 @@ class Intro:
                         self.text_color)
         self.text_rect = self.text_image.get_rect()
 
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#                 I CAN CONDENSE THIS INTO ONE FUNC WITH THE PARAM TEXT
     def prep_custom_text(self, text):
         """Render the text"""
         self.text_image = self.font.render(f"{text}", True,
@@ -47,18 +45,6 @@ class Intro:
         self.text_rect = self.text_image.get_rect()
         self.text_rect.center = self.screen_rect.center
         self.text_rect.top = 20
-
-    def prep_setting_choice(self):
-            """Render the text"""
-            text="Would you like to see the bot's guesses? (y/n) "
-            self.text_image = self.font.render(f"{text}", True,
-                    self.text_color)
-    
-            #display the score at the top right of the screen.
-            self.text_rect = self.text_image.get_rect()
-            self.text_rect.center = self.screen_rect.center
-            self.text_rect.top = 20
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     def show_text(self):
         """Draw scores, level, and ships to the screen."""

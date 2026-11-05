@@ -2,6 +2,12 @@
  You are told if the number is higher or lower than your guess each round. There are unlimited rounds
  with feedback in between each one showing stats to make it feel more like a built out text based game."""
 
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#    I didn't make the game look nice and pretty, or even move it away from being entirely text based,
+#    but I think it's pretty decent. I definetly gained a much better understanding of pygame which will
+#    hopefully come in handy with the final project.
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 from random import randint
 
 import sys
@@ -9,7 +15,7 @@ from time import sleep
 import pygame
 
 #from settings import Settings
-from Tutorial import Intro
+from text import Intro
 from button import Button
 
 
@@ -80,18 +86,20 @@ class HighLow:
                 for i in self.avgscore: self.average+= i
                 self.average /= len(self.avgscore)
 
-                self.tut.prep_custom_text(f"You have played {self.roundsPlayed} rounds and have gotten the following scores:")
+                self.tut.prep_custom_text(f"You have played {self.roundsPlayed} rounds and have gotten the following scores: \n"
+                                          +(", ".join(str(i) for i in self.scores))+f"\n"
+                                          +(f"Your Average Score Is {self.average:.2f} \nYour Highscore Is {min(self.avgscore)}"))
                 self.refresh_screen()
-                sleep(1)
+                sleep(4)
 
-                self.tut.prep_custom_text(", ".join(str(i) for i in self.scores))
+                #self.tut.prep_custom_text(", ".join(str(i) for i in self.scores))
 
-                self.refresh_screen()
-                sleep(1)
+                #self.refresh_screen()
+                #sleep(1)
 
-                self.tut.prep_custom_text(f"Your Average Score Is {self.average:.2f} and Your Highscore Is {min(self.avgscore)}")
-                self.refresh_screen()
-                sleep(1)
+                #self.tut.prep_custom_text(f"Your Average Score Is {self.average:.2f} \nYour Highscore Is {min(self.avgscore)}")
+                #self.refresh_screen()
+                #sleep(1)
 
                 self.tut.prep_custom_text("Do you want to play again? (y/n) ")
                 
@@ -129,6 +137,7 @@ class HighLow:
             self.refresh_screen()
 
     def refresh_screen(self):
+        """Updates the screen"""
         #redraw the screen
         self._update_screen()
                                                                                             
@@ -137,12 +146,13 @@ class HighLow:
         self.clock.tick(60)      
     
     def _set_up_one_time_vars(self):
-        """A class to set up vars. Were you expecting smth else???"""
+        """Sets up vars. Were you expecting smth else???"""
         #SETTING UP VARS:
         self.scores=[]
         self.roundsPlayed=0   
 
     def _set_up_every_round_vars(self): #I don't know if I could've made that function name any longer :B
+        """Sets up vars that need reset every round"""
         self.a=randint(self.low,self.high) #Our random num for the round
         self.numGuesses=0
         self.botLow=self.low
@@ -187,7 +197,7 @@ class HighLow:
                 self.tut.prep_tut()
                 self.play_button = Button(self, "Continue")
             elif self.play_button.msg=="Continue":
-                self.tut.prep_setting_choice()
+                self.tut.prep_custom_text("Would you like to see the bot's guesses? (y/n)")
                 self.no_button = Button(self, "No", "two")
                 self.play_button = Button(self, "Yes", "one")
             elif self.play_button.msg == "Yes":
@@ -207,6 +217,7 @@ class HighLow:
             self.enter_pressed=True
 
     def guess_processing(self):
+        """Checks guess and bot guess and sees if they were higher, lower, or right on"""
         self.numGuesses +=1
         if self.guess > self.a:
             output="high"
@@ -225,21 +236,19 @@ class HighLow:
             self.botOutput="right on!"
         return(output)
         
-    def guess_display(self):
-        self.tut.prep_custom_text(f"You guessed {self.guess_analysis}")
-        self.refresh_screen()
-        
-        sleep(0.5)
+    def guess_display(self):  
+        """Displays the lowdown on what you and the bot guessed"""     
         if self.showBotGuess:
-            self.tut.prep_custom_text(f"The Bot's Guess: {self.botGuess}")
-            self.refresh_screen()
-        
-            sleep(0.5)
-        self.tut.prep_custom_text(f"The Bot guessed {self.botOutput}")
-        self.refresh_screen()
-        
-        sleep(0.5)
+            self.tut.prep_custom_text((f"You guessed {self.guess_analysis}\n")
+                                                          +(f"The Bot's Guess: {self.botGuess}"+"\n")
+                                                          +(f"The Bot guessed {self.botOutput}"))
+        else:
+            self.tut.prep_custom_text((f"You guessed {self.guess_analysis}\n")
+                                              +(f"The Bot guessed {self.botOutput}"))
 
+        self.refresh_screen()
+                
+        sleep(2)
 
     def validation(self,isFirstTime):
         """Makes sure a valid positive interger is entered, and repeats if not."""
@@ -252,7 +261,6 @@ class HighLow:
         else:
             self.tut.prep_custom_text("Enter your next guess ")
         self.refresh_screen()
-        sleep(0.5)
 
         while not self.validGuess: #Make them keep trying until they get it right
             while not self.enter_pressed:
