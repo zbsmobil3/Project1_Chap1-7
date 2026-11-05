@@ -39,6 +39,7 @@ class Intro:
             self.text_rect = self.text_image.get_rect()
             self.text_rect.center = self.screen_rect.center
             self.text_rect.top = 20
+            self.text_rect.y+=100
             return("Sucsessful!")
         
     def prep_tut(self):
@@ -53,6 +54,7 @@ class Intro:
         self.text_rect = self.text_image.get_rect()
         self.text_rect.center = self.screen_rect.center
         self.text_rect.top = 20
+        self.text_rect.y+=100
 
     def show_text(self):
         """Draw scores, level, and ships to the screen."""
